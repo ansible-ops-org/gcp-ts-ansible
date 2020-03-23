@@ -1,0 +1,42 @@
+---
+#...........................................
+- name: CREATE TAR REPO
+  file:
+     name:  "{{ tar_repo }}"
+     state: directory
+#............................................
+
+- stat: path="{{ tar_repo }}/jre-9.0.4_linux-x64_bin.tar.gz"
+  register: st
+
+- name: DOWNLOAD  JRE 9.0.4 FROM S3
+  get_url:
+    url:  "{{ nexus_jre_url }}"
+    dest:  "{{ tar_repo  }}"
+  when: not st.stat.exists
+    
+    
+#............................................
+- name: UNARCHIVE  JRE 9.0.4
+  unarchive:
+    src:  "{{ tar_repo }}/jre-9.0.4_linux-x64_bin.tar.gz"
+    dest:  "{{ tar_repo }}"
+    remote_src: yes
+
+- name: RENAME JRE 
+  shell: "mv {{ tar_repo }}/jre-9.0.4  {{ jre_dest_dir }}/"
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+

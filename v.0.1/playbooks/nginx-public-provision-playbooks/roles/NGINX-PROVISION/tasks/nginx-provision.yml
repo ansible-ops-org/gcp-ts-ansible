@@ -1,0 +1,33 @@
+---
+- name: CREATION OF VIRTUAL HOST CONFIG
+  file: 
+    path: "{{ nginx_vhost_dir }}"
+    state: directory
+
+- name: DEPLOY NGINX CONFIG TEMPLATE
+  template: 
+    src:  "{{ nginx_conf_template }}"
+    dest: "{{ nginx_dir }}/{{ nginx_conf }}"
+    owner: nginx
+    group: nginx
+    mode:  '0775'
+
+
+- name: DEPLOY REVERSE PROXY CONFIG IN NGINX FOR TRAFFIC ROUTE FROM NGINX TO TOMCAT
+  template:
+    src:  "{{ tomcat_reverse_proxy_conf_template }}"
+    dest: "{{ nginx_vhost_dir }}/{{ tomcat_reverse_proxy_conf }}"
+    owner: nginx
+    group: nginx
+    mode:  '0775'          
+
+- name: RESTART NGINX
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+
+
+
+

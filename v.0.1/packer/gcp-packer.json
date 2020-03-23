@@ -1,0 +1,40 @@
+{
+  "variables": {
+    "ssh_username": "sudipta1436",	  
+    "service_account_json": "/opt/sa/connector-2.json",
+    "project_id": "connector-2-250114"
+  },
+  "builders": [
+    {
+      "type": "googlecompute",
+      "account_file": "{{ user `service_account_json`}}",
+      "project_id": "connector-2-250114",
+      "ssh_username": "{{user `ssh_username`}}",
+      "region": "us-central1",
+      "zone": "us-central1-a",
+      "machine_type": "g1-small",
+      "source_image": "tera-ami",
+      "image_description":"build  latest packer image",
+      "image_name": "tera-ami-{{timestamp}}",
+      "image_family": "tera-ami",
+      "source_image_family": "centos 7",
+      "disk_size": 10,
+      "disk_type": "pd-ssd"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "inline": [
+        "sleep 1",
+        "sleep 1"
+      ],
+      "type": "shell"
+    },
+    {
+      "playbook_file": "/opt/gcp-tera-ansible/playbooks/infra-provision-playbooks/copy-1.yml",
+      "type": "ansible",
+      "user": "sudipta1436"
+    }
+  ]
+}

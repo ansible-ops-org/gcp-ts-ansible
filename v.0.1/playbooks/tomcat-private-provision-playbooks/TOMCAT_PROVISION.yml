@@ -1,0 +1,7 @@
+---
+- hosts: tag_tomcat-nodes
+  gather_facts: no
+  become: true
+  become_method: sudo 
+  roles:
+   - TOMCAT-PROVISION

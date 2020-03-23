@@ -1,0 +1,12 @@
+- hosts: "{{ node }}"
+  become: true
+  become_user: sudipta1436
+  #become_method: sudo
+  tasks:
+      - name: print hello
+        shell: echo "hello world" 
+        register: helo
+
+      - name: Print helo
+        debug:
+          msg: "helo output: {{ helo.stdout }}"

@@ -1,0 +1,3 @@
+---
+# tasks file for INFRA-PROVISION
+- import_tasks: infra-destroy.yml

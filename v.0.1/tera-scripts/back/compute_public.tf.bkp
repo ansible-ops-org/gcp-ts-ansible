@@ -1,0 +1,57 @@
+data "google_compute_image" "my_image" {
+  family  = "tera-demo"
+  project = "connector-2-250114"
+}
+resource "google_compute_instance" "pub-instance" {
+  count        = 1
+  name         = "${var.pub-instance-name}"
+  machine_type = "${var.vm_type["512gig"]}"
+  zone = "${var.zones["zone0"]}"
+  tags = [
+    "nat-instance",
+    "${var.network}-pub-firewall-ssh",
+    "${var.network}-pub-firewall-http",
+    "${var.network}-pub-firewall-https",
+    "${var.network}-pub-firewall-icmp",
+  ]
+  boot_disk {
+    initialize_params {
+      image = "${data.google_compute_image.my_image.self_link}"
+    }
+  } 
+  
+ metadata {
+    hostname = "${var.hostname["host2"]}"
+    sshKeys = "${var.gce_ssh_user}:${file(var.gce_ssh_pub_key_file)}"
+  }
+  can_ip_forward = true
+  metadata_startup_script = "sudo yum -y update; sudo yum  -y install nginx ; sudo pip install ansible==2.7.10"
+  network_interface {
+    subnetwork = "${google_compute_subnetwork.my_public_subnetwork.name}"
+    access_config {
+      // Ephemeral IP
+    }
+  }
+}
+
+
+resource "google_compute_instance_group" "webservers" {
+  count       = 1
+  name        = "webserver-group-${count.index}"
+  description = "Instance group for compute instances"
+  network     = "${google_compute_network.my_network.self_link}"
+  instances   = ["${element(google_compute_instance.pub-instance.*.self_link, count.index)}"]
+  zone        = "${lookup(var.zones, "zone${count.index}")}"
+  named_port {
+    name = "http"
+    port = "80"
+  }
+  named_port {
+    name = "https"
+    port = "443"
+  }
+}
+
+
+
+

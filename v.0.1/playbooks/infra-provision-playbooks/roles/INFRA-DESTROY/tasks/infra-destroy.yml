@@ -1,0 +1,8 @@
+---
+- name: TERRAFORM DESTROY
+  terraform:
+    project_path: '/opt/gcp-tera-ansible/tera-scripts'
+    lock: true
+    state: absent
+
+

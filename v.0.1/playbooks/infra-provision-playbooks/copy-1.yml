@@ -1,0 +1,8 @@
+- hosts: all
+  tasks:
+      - copy:
+          src: "{{ item }}"
+          dest: /home/sudipta1436
+        with_fileglob:
+          - /opt/gcp-tera-ansible/helo.txt 
+

@@ -1,0 +1,10 @@
+---
+- hosts: dev
+  gather_facts: yes
+  #  become: true
+  #become_method: sudo 
+  roles:
+   - INFRA-DESTROY
+
+
+

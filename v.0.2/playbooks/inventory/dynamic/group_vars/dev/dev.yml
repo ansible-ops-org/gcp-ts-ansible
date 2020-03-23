@@ -1,0 +1,2 @@
+ansible_ssh_common_args: "-o ProxyCommand=\"ssh -i /opt/gcp-tera-ansible/google_cloud_compute-public -o StrictHostKeyChecking=no -W %h:%p -t -q sudipta1436@xxxxx\""
+

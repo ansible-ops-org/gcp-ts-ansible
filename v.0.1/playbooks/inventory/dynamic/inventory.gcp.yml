@@ -1,0 +1,8 @@
+plugin: gcp_compute
+projects:
+  - connector-2-250114
+zones:
+  - "us-central1-a"
+filters: []
+auth_kind: serviceaccount
+service_account_file: "/opt/gcp-tera-ansible/connector-2-250114-2686add953e4.json"

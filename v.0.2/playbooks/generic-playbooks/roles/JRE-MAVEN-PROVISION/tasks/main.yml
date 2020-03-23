@@ -1,0 +1,4 @@
+---
+# tasks file for nginx
+- import_tasks: jre-provision.yml
+- import_tasks: maven-provision.yml  

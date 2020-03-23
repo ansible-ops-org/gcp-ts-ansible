@@ -1,0 +1,29 @@
+---
+#............................................
+
+
+- name: GIT CLONE
+  git:      
+    repo: "{{ git_repo }}"
+    dest: "{{ git_dest }}"
+    version: "{{ branch }}"
+
+
+
+- name: MAVEN BUILD
+  shell: "source  {{ profile_path }} && {{ mvn_clean }} && {{ mvn_install }}"
+  args:
+    executable: /bin/bash      
+    chdir: "{{ git_dest }}"
+
+
+- name: PUSH TO S3
+  shell: bash /opt/apps/s3-push.sh
+
+- name: DEPLOY TO TOMCAT
+  get_url:
+    url:  "{{ nexus_app_url }}"
+    dest:  "{{ tomcat_webapps_dir }}"
+  
+
+

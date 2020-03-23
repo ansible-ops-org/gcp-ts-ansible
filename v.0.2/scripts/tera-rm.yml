@@ -1,0 +1,5 @@
+rm -rf .terraform
+terraform init
+terraform plan
+terraform destroy -lock=false --auto-approve && terraform apply -lock=false --auto-approve
+

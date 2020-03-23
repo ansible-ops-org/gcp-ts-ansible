@@ -1,0 +1,7 @@
+---
+- hosts: tag_nginx-nodes
+  gather_facts: true
+  become: true
+  become_method: sudo 
+  roles:
+   - APP-DEPLOYMENT

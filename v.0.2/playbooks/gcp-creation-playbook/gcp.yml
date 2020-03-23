@@ -1,0 +1,18 @@
+- hosts: dev
+  gather_facts: no
+  vars:
+    service_account_file: /opt/gcp-creation-playbook/connector-2.json
+    project: connector-2-250114
+    auth_kind: serviceaccount
+    scopes:
+      - https://www.googleapis.com/auth/compute
+  tasks:
+   - name: Allocate an IP Address
+     gcp_compute_address:
+         state: present
+         name: 'node-01'
+         region: 'us-central1'
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"

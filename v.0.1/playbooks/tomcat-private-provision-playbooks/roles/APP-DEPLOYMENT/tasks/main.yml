@@ -1,0 +1,4 @@
+---
+# tasks file for APP-DEPLOYMENT
+
+- import_tasks: app-deployment.yml

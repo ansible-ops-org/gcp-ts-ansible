@@ -1,0 +1,3 @@
+- name: execute nginx provision
+  shell: ansible-playbook -i /opt/gcp-tera-ansible/inventory/dynamic/./gce.py  /opt/gcp-tera-ansible/inventory/dynamic/helo.yml --extra-vars "node=compute-instance-0" 
+

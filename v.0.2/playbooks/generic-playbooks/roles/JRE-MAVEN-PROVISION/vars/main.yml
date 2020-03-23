@@ -1,0 +1,23 @@
+---
+# vars file for tomcat
+tar_repo: "/opt/tars"
+deploy_user: "deploy"
+deploy_home_dir: "/home/deploy"
+deploy_bashrc: bashrc.j2
+deploy_bashrc_dest: .bashrc
+
+
+##jre
+
+jre_dest_dir: "/opt/apps/jre"
+nexus_jre_url: "https://dev-nik-1.s3.amazonaws.com/provision/jre-9.0.4_linux-x64_bin.tar.gz"
+
+
+
+##mvn
+nexus_maven_url: "https://dev-nik-1.s3.amazonaws.com/provision/apache-maven-3.3.9-bin.tar.gz"
+maven_dest_dir: "/opt/apps/maven"
+
+
+
+

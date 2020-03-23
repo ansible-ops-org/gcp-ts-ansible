@@ -1,0 +1,131 @@
+---
+#............................................
+- name: CREATE DIRECTORIES
+  file:
+    path: "{{ item }}"
+    state: directory
+    
+  with_items:
+    - /opt/tars
+    - /opt/apps
+    - /opt/apps/tomcat
+    
+
+
+
+- stat: path="{{ tar_repo }}/apache-tomcat-8.5.43.tar.gz"
+  register: st
+
+- name: DOWNLOAD  TOMCAT FROM NEXUS
+  get_url:
+    url:  "{{ nexus_tomcat_url }}"
+    dest:  "{{ tar_repo }}"
+  when: not st.stat.exists    
+#............................................
+
+- name: UNARCHIVE  TOMCAT
+  unarchive:
+    src:  "{{ tar_repo }}/apache-tomcat-8.5.43.tar.gz"
+    dest:  "{{ tar_repo }}"
+    remote_src: yes
+
+#...............................................
+
+- stat: path=/opt/apps/tomcat
+  register: st2
+
+- name: COPY  TOMCAT CONTENTS TO TOMCAT DIRECTORY
+  shell: "cp -rvf /opt/tars/apache-tomcat-8.5.43/*   /opt/apps/tomcat/"
+  #when: not st2.stat.exists
+
+
+  
+  
+  
+- name: DEPLOY service.xml TO TOMCAT CONF DIR
+  template:
+    src:  "{{ server_template_j2 }}"
+    dest: "{{ tomcat_conf_dir }}/{{ server_template }}"
+    
+  
+  
+  
+#................................................
+
+
+- name: PROVIDE PERMISSION TO TOMCAT
+  shell: "{{ item }}"
+  with_items:
+     - find {{ tomcat_dir }} -type f  | xargs -I {} chmod 775 {}
+     - find {{ tomcat_dir }} -type d  | xargs -I {} chmod 775 {}
+
+
+- name: PROVIDE OWNERSHIP TO TOMCAT
+  shell: |
+    chown -R tomcat:tomcat "{{item}}"
+  args:
+    warn: no
+  register: chown_status
+  changed_when: chown_status.stdout != ""
+  with_items:
+    - /opt/apps/tomcat
+
+
+#...............................................
+
+- name: DEPLOY TOMCAT SVC
+  template:
+    src:  "{{ tomcat_svc_temp_file }}"
+    dest: "{{ tomcat_svc_dir }}/tomcat.service"
+    owner:  "{{ tomcat_user }}"
+    group:  "{{ tomcat_user }}"
+ #   mode: 0644
+
+
+#...............................................
+
+#- name: DEPLOY PROFILE TO ETC DIR
+#  template:
+#    src:  "{{ profile_template_j2 }}"
+#    dest: "{{ deploy_dir }}/{{ profile_template }}"
+
+
+#............................................
+#- name: source bashrc
+#  shell: source /etc/profile 
+#  args:
+#     executable: /bin/bash
+
+     
+     
+     
+     
+#
+#     
+#- name: PRINT JAVA
+#  shell: bash /home/deploy/java.sh
+#  register: jre_out
+#
+#- name: print jre output
+#  debug:
+#    msg: "{{ jre_out.stdout }}"      
+#
+
+
+
+
+
+
+- name: reload config
+  systemd:
+    daemon_reload: yes
+
+
+- name: RESTART TOMCAT
+  service:
+    name: tomcat
+    state: started
+    enabled: yes
+    
+
+

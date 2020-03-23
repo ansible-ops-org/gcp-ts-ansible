@@ -1,0 +1,8 @@
+- hosts: dev
+  become_user: sudipta1436
+  become_method: sudo
+  become: true
+  gather_facts: yes
+  tasks:
+    - name: execute
+      shell: ansible-playbook -i /opt/gcp-tera-ansible/playbook/./gce.py  /opt/gcp-tera-ansible/playbook/helo.yml   --extra-vars "node=compute-instance-0"

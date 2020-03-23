@@ -1,0 +1,21 @@
+Host compute-public
+    User                   sudipta1436
+    HostName               34.66.162.152
+    ProxyCommand           none
+    IdentityFile           /opt/gcp-tera-ansible/google_cloud_compute-public
+    BatchMode              yes
+    PasswordAuthentication no
+
+Host *
+    ServerAliveInterval    60
+    TCPKeepAlive           yes
+    ProxyCommand           ssh -i /opt/gcp-tera-ansible/google_cloud_compute-public -o StrictHostKeyChecking=no -W %h:%p -t -q sudipta1436@34.66.162.152
+    ControlMaster          auto
+    ControlPath            ~/.ssh/mux-%r@%h:%p
+    ControlPersist         8h
+    User                   sudipta1436
+    IdentityFile           /opt/gcp-tera-ansible/google_cloud_compute-public
+
+
+
+

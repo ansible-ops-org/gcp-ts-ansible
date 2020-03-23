@@ -1,0 +1,33 @@
+---
+# vars file for tomcat
+tar_repo: "/opt/tars"
+nexus_tomcat_url: "https://dev-nik-1.s3.amazonaws.com/provision/apache-tomcat-8.5.43.tar.gz"
+
+profile_template_j2: "profile.j2"
+profile_template: "profile"
+
+server_template_j2: "server.xml.j2"
+server_template: "server.xml"
+
+
+
+deploy_dir: "/etc/"
+
+tomcat_dir: "/opt/apps/tomcat"
+tomcat_conf_dir: "/opt/apps/tomcat/conf"
+tomcat_svc_dir: "/etc/systemd/system"
+tomcat_svc_temp_file: "tomcat.svc.j2"
+tomcat_svc_temp_file_dest: "tomcat.svc"
+tomcat_user: "tomcat"
+jre_path: "/usr/java/jre-9.0.4"
+
+
+git_repo: "https://github.com/nik786/hello-tomcat-project-2.git"
+git_dest: "/opt/apps/helo"
+branch: "master"
+profile_path: "/etc/profile"
+mvn_clean: "/opt/apps/maven/bin/mvn clean"
+mvn_install: "/opt/apps/maven/bin/mvn install"
+nexus_app_url: "https://hello-artifactory.s3.amazonaws.com/artifacts/mavenproject1-1.0-SNAPSHOT.war"
+tomcat_webapps_dir: "/opt/apps/tomcat/webapps"
+tomcat_user: "tomcat"

@@ -1,0 +1,13 @@
+---
+- hosts: dev
+  gather_facts: no
+  become: true
+  become_method: sudo 
+  roles:
+   - INFRA-PROVISION
+
+---
+- hosts: dev
+   
+
+

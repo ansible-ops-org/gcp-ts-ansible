@@ -1,0 +1,30 @@
+---
+- name: BUILD LATEST IMAGE BY PACKER
+  shell: packer build gcp-packer.json 
+  args:
+    chdir: /opt/gcp-tera-ansible/packer
+  register: pack
+- debug:
+    msg: "{{ pack.stdout }}"
+
+
+
+- name: TERRAFORM PLAN
+  shell: terraform plan -out=/opt/gcp-tera-ansible/tera-scripts/tfplan.tfstate -lock=false
+  args:
+    chdir: /opt/gcp-tera-ansible/tera-scripts
+  register: tplan
+- debug: 
+    msg: "{{ tplan.stdout }}"
+
+
+- name: TERRAFORM APPLY
+  terraform:
+    project_path: '/opt/gcp-tera-ansible/tera-scripts'
+    plan_file: '/opt/gcp-tera-ansible/tera-scripts/tfplan.tfstate'
+    lock: true
+    state: present
+  register: tapply
+- debug:
+    msg: "{{ tapply.stdout }}"
+  

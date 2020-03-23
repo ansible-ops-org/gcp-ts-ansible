@@ -1,0 +1,17 @@
+---
+# vars file for APP-DEPLOYMENT
+
+
+git_repo: "https://github.com/nik786/hello-tomcat-project-2.git"
+git_dest: "/opt/apps/helo"
+branch: "master"
+profile_path: "/etc/profile"
+mvn_clean: "/opt/apps/maven/bin/mvn clean"
+mvn_install: "/opt/apps/maven/bin/mvn install"
+nexus_app_url: "https://hello-artifactory.s3.amazonaws.com/artifacts/mavenproject1-1.0-SNAPSHOT.war"
+tomcat_webapps_dir: "/opt/apps/tomcat/webapps"
+tomcat_user: "tomcat"
+
+
+
+

@@ -1,0 +1,58 @@
+---
+
+#............................................
+
+- stat: path="{{ tar_repo }}/apache-maven-3.3.9-bin.tar.gz"
+  register: st
+
+
+- name: DOWNLOAD  MAVEN FROM S3
+  get_url:
+    url:  "{{ nexus_maven_url }}"
+    dest:  "{{ tar_repo }}"
+  when: not st.stat.exists    
+#............................................
+
+- name: UNARCHIVE  MAVEN
+  unarchive:
+    src:  "{{ tar_repo }}/apache-maven-3.3.9-bin.tar.gz"
+    dest:  "{{ tar_repo }}"
+    remote_src: yes
+
+- name: RENAME MAVEN 
+  shell: "mv {{ tar_repo }}/apache-maven-3.3.9   {{ maven_dest_dir }}/"
+
+
+
+#...............................................
+
+- name: DEPLOY PROFILE TO ETC DIR
+  template:
+    src:  "{{ profile_template_j2 }}"
+    dest: "{{ deploy_dir }}/{{ profile_template }}"
+
+
+#............................................
+- name: source bashrc
+  shell: source /etc/profile
+  args:
+     executable: /bin/bash
+#
+#     
+#- name: PRINT JAVA
+#  shell: bash /home/deploy/java.sh
+#  register: jre_out
+#
+#- name: print jre output
+#  debug:
+#    msg: "{{ jre_out.stdout }}"      
+#
+#
+#- name: PRINT MAVEN
+#  shell: bash /home/deploy/java.sh
+#  register: jre_out
+#
+#- name: print jre output
+#  debug:
+#    msg: "{{ jre_out.stdout }}"
+
