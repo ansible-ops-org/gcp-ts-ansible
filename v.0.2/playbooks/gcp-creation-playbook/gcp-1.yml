@@ -1,8 +1,8 @@
 - hosts: dev
   gather_facts: no
   vars:
-    gcp_cred_file: /opt/gcp-creation-playbook/connector-2.json
-    gcp_project: connector-2-250114
+    gcp_cred_file: /opt/gcp-creation-playbook/con.json
+    gcp_project: con
     gcp_cred_kind: serviceaccount
     scopes:
       - https://www.googleapis.com/auth/compute
